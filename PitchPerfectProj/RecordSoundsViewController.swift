@@ -28,7 +28,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
     }
     
-
+    // Sets up audio video recorder and starts recording audio. 
+    // Records the audio in a file called recordedVoice.wav
+    // Also manages the states of buttons.
     @IBAction func recordAudio(_ sender: Any) {
         recordingLabel.text = "Recording!"
         stopRecordingButton.isEnabled = true
@@ -49,6 +51,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.record()
     }
 
+    // Stops recording audio and manages states of buttons.
     @IBAction func stopRecording(_ sender: Any) {
         recordButton.isEnabled = true
         stopRecordingButton.isEnabled = false
@@ -59,23 +62,23 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
     }
     
+    
+    // On successful completion of recording, navigates to the next screen.
+    // And shows alert on failure.
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         
         if flag {
             performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
         } else {
-            print ("Recording unsuccessful")
+            let alertController = UIAlertController(title: "Alert", message: "Recording Failed. Please try again!", preferredStyle: .alert)
+            let viewAction = UIAlertAction(title: "Ok", style: .cancel , handler: nil)
+            alertController.addAction(viewAction)
+            present(alertController, animated: true, completion: nil)
         }
     }
     
-    func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
-        let alertController = UIAlertController(title: "Alert", message: "Audio Encode Error", preferredStyle: .alert)
-        let viewAction = UIAlertAction(title: "Ok", style: .cancel , handler: nil)
-        alertController.addAction(viewAction)
-        present(alertController, animated: true, completion: nil)
-    }
     
-    
+    // Prepares the PlaySoundsViewController on "stopRecording" segue.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "stopRecording" {
             let playSoundsVC = segue.destination as! PlaySoundsViewController
