@@ -22,19 +22,12 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         stopRecordingButton.isEnabled = false
 
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
     
     // Sets up audio video recorder and starts recording audio. 
     // Records the audio in a file called recordedVoice.wav
     // Also manages the states of buttons.
     @IBAction func recordAudio(_ sender: Any) {
-        recordingLabel.text = "Recording!"
-        stopRecordingButton.isEnabled = true
-        recordButton.isEnabled = false
+        setUIStateForRecording(isRecording: true)
         
         let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
@@ -53,15 +46,19 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
 
     // Stops recording audio and manages states of buttons.
     @IBAction func stopRecording(_ sender: Any) {
-        recordButton.isEnabled = true
-        stopRecordingButton.isEnabled = false
-        recordingLabel.text = "Record!"
+        setUIStateForRecording(isRecording: false)
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
         
     }
     
+    //Sets the UI State for buttons based on isRecording.
+    func setUIStateForRecording(isRecording: Bool) {
+        stopRecordingButton.isEnabled = isRecording
+        recordButton.isEnabled = !isRecording
+        recordingLabel.text = isRecording ? "Recording!" : "Record!"
+    }
     
     // On successful completion of recording, navigates to the next screen.
     // And shows alert on failure.
