@@ -20,6 +20,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         stopRecordingButton.isEnabled = false
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -29,7 +30,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     
 
     @IBAction func recordAudio(_ sender: Any) {
-        recordingLabel.text = "Recording in progress"
+        recordingLabel.text = "Recording!"
         stopRecordingButton.isEnabled = true
         recordButton.isEnabled = false
         
@@ -51,7 +52,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     @IBAction func stopRecording(_ sender: Any) {
         recordButton.isEnabled = true
         stopRecordingButton.isEnabled = false
-        recordingLabel.text = "Tap to Record"
+        recordingLabel.text = "Record!"
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
@@ -65,6 +66,13 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         } else {
             print ("Recording unsuccessful")
         }
+    }
+    
+    func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
+        let alertController = UIAlertController(title: "Alert", message: "Audio Encode Error", preferredStyle: .alert)
+        let viewAction = UIAlertAction(title: "Ok", style: .cancel , handler: nil)
+        alertController.addAction(viewAction)
+        present(alertController, animated: true, completion: nil)
     }
     
     
