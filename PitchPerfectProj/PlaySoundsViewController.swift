@@ -31,6 +31,7 @@ class PlaySoundsViewController: UIViewController {
         case slow = 0, fast, chipmunk, vader, echo, reverb
     }
     
+    // Plays Sounds based on pressed button.
     @IBAction func playSoundForButton(_ sender: UIButton) {
         
         switch(ButtonType(rawValue: sender.tag)!) {
@@ -52,6 +53,7 @@ class PlaySoundsViewController: UIViewController {
         configureUI(.playing)
     }
     
+    // Stops playing the audio.
     @IBAction func stopSound(_ sender: AnyObject) {
         stopAudio()
     }
